@@ -1,6 +1,6 @@
 package ru.inno.course;
 
-public class Homework2_1 {
+public class HiddenCardNumber {
 
     public static void main(String[] args) {
 
