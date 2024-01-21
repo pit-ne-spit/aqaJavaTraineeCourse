@@ -6,8 +6,6 @@ public class Room {
     float roomArea;
     boolean isWarmFloor;
     int roomWeight;
-    float wallHeight;
-
 
     public Room(String roomName, float roomArea, boolean isWarmFloor, int roomWeight) {
         this.roomName = roomName;
