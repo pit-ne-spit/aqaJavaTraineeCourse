@@ -1,5 +1,6 @@
 package ru.inno.course;
 
+// Я понял, что надо было только описать алгоритм, но я не смог остановится
 public class Homework4_5 {
     public static void main(String[] args) {
         String password = "qwqeqweqwy1!h";
