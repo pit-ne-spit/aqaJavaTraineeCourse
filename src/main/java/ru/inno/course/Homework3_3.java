@@ -13,6 +13,12 @@ public class Homework3_3 {
              ) {
             System.out.println(element.title + " | " + element.rating + " | " + element.genre + " | " + element.country + " | " + element.isOscar);
         }
+        System.out.println("-----------------------------------------------------------------------------");
+        for (int i = 0; i < films.length; i++) {
+
+            System.out.println(films[i].title + " | " + films[i].rating + " | " + films[i].genre + " | " + films[i].country + " | " + films[i].isOscar);
+
+        }
 
     }
 }
