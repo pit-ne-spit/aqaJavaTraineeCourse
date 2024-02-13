@@ -13,7 +13,7 @@ public class Copier {
 
         Path inputFile = Path.of(inputPath);
         Path outputFile = Path.of(outputPath);
-        Files.copy(inputFile, outputFile, StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(inputFile, outputFile);
 
     }
     public static boolean isExistCopyFile(String outputPath) {
