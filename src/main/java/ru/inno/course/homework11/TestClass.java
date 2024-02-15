@@ -8,9 +8,10 @@ public class TestClass {
         PlayerService service = new PlayerServiceJSON();
 
         int playerId = service.createPlayer("WinMaster_7977");
-        System.out.println(service.createPlayer("WinM7"));
-        System.out.println(service.createPlayer("WinewM7"));
-
+        service.createPlayer("WinM7");
+        service.createPlayer("WinewM7");
+        service.createPlayer("WinewM7");
+        System.out.println(playerId);
         service.addPoints(playerId, 100);
 
 
