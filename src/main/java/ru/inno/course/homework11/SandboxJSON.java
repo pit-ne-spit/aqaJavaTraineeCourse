@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
@@ -22,28 +23,34 @@ public class SandboxJSON implements PlayerService{
     @Override
     public int createPlayer(String nickname) {
         int i = 0;
-        if (draftList.size() == 0) {
-            i = 1;
-            draftList.add(new Player(i, nickname, 0));
-            try {
-                writeToFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            return i;
-        } else {
-            try {
-                if (uniqueNick(nickname)){
-                    draftList.add(new Player(nextID(), nickname, 0));
+        try {
+            if (Files.notExists(filePath) || Files.size(filePath) == 0) {
+                try {
+                    Files.writeString(Path.of("src/resources/players.json"), "0");
+                    i = 1;
+                    draftList.add(new Player(i, nickname, 0));
                     writeToFile();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-                else {
-                    System.out.println("Nick \"" + nickname + "\" is already exist. Please, try another one.");
+                return i;
+            } else {
+                try {
+                    if (uniqueNick(nickname)){
+                        draftList = readFromFile();
+                        draftList.add(new Player(nextID(), nickname, 0));
+                        writeToFile();
+                    }
+                    else {
+                        System.out.println("Nick \"" + nickname + "\" is already exist. Please, try another one.");
+                    }
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                return i;
             }
-            return i;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -56,22 +63,18 @@ public class SandboxJSON implements PlayerService{
     public int addPoints(int playerId, int points) {
         return 0;
     }
-
-    public static Set<Player> getDraftList() {
-        return draftList;
-    }
-
-    public static Set<Player> draftList = new HashSet<>();
-    public static List<Player> playersFromJSON = new ArrayList<>();
+    public static Collection<Player> draftList = new HashSet<>();
+    public static Collection<Player> playersFromJSON = new ArrayList<>();
     Path filePath = Path.of("src/resources/players.json");
 
     public void writeToFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(filePath.toFile(), draftList);
     }
-    public List<Player> readFromFile() throws IOException {
+
+    public Collection<Player> readFromFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Player>> typeReference = new TypeReference<>() {};
+        TypeReference<Collection<Player>> typeReference = new TypeReference<>() {};
         playersFromJSON = mapper.readValue(filePath.toFile(), typeReference);
         return playersFromJSON;
     }
@@ -88,8 +91,8 @@ public class SandboxJSON implements PlayerService{
     }
 
 
-    public int nextID() {
-        Collection<Player> players = getDraftList();
+    public int nextID() throws IOException {
+        Collection<Player> players = readFromFile();
         ArrayList<Integer> maxI = new ArrayList<>();
 
         for (Player player : players) {
@@ -103,14 +106,7 @@ public class SandboxJSON implements PlayerService{
     public static void main(String[] args) throws IOException {
         PlayerService service = new SandboxJSON();
 
-        service.createPlayer("A");
-        service.createPlayer("A");
-        service.createPlayer("d");
-        service.createPlayer("A");
-        service.createPlayer("Aa");
-
-
-
+        service.createPlayer("It's alive!!!!!!");
 
     }
 
