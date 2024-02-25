@@ -7,20 +7,15 @@ public class TestClass {
     public static void main(String[] args) {
         PlayerService service = new PlayerServiceJSON();
 
-        int playerId = service.createPlayer("WinMaster_7977");
-        service.createPlayer("WinM7");
-        service.createPlayer("WinewM7");
-        service.createPlayer("WinewM7");
-        System.out.println(playerId);
-        service.addPoints(playerId, 100);
+        int playerId = service.createPlayer("WinMasfgdfgter_777");
+        int playerId1 = service.createPlayer("WinMasdfgter_777");
+        service.addPoints(1, 1500);
+        System.out.println(service.getPlayerById(2));        ;
 
-
-
-        Collection<Player> players = service.getPlayers();
-        for (Player player : players) {
-            System.out.println(player);
-        }
-
+//        Collection<Player> players = service.getPlayers();
+//        for (Player player : players) {
+//            System.out.println(player);
+//        }
 
     }
 }
