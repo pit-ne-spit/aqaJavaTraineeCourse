@@ -14,6 +14,7 @@ public class PlayerServiceJSON implements PlayerService{
     public static Collection<Player> players = new ArrayList<>();
     public static Collection<Player> playersFromJSON = new ArrayList<>();
     static Path filePath = Path.of("src/resources/players.json");
+    static Path counter = Path.of("src/resources/counter.txt");
     @Override
     public Player getPlayerById(int id) {
         Player targetPlayer = null;
@@ -35,24 +36,22 @@ public class PlayerServiceJSON implements PlayerService{
 
     @Override
     public Collection<Player> getPlayers() {
-        return players;
+        return playersFromJSON;
     }
 
     @Override
     public int createPlayer(String nickname) {
-        int i = 0;
+
         try {
-            deleteEmptyFile(filePath, nickname);
+            deleteEmptyFile(filePath);
             if (Files.notExists(filePath))
             {
                 Files.createFile(Path.of(String.valueOf(filePath)));
                 readyPlayerOne(nickname);
-                return i = 1;
             }
             else if (Files.size(filePath) == 0) {
                 try {
                     readyPlayerOne(nickname);
-                    return i = 1;
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -61,9 +60,9 @@ public class PlayerServiceJSON implements PlayerService{
                 try {
                     if (uniqueNick(nickname)){
                         players = readFromFile();
-                        players.add(new Player(nextID(), nickname, 0));
+                        players.add(new Player(readIdCounter(counter), nickname, 0));
                         writeToFile(players);
-                        return i = nextID();
+                        writeIdCounter(counter);
                     }
                     else {
                         System.out.println("Nick \"" + nickname + "\" is already exist. Please, try another one.");
@@ -76,7 +75,11 @@ public class PlayerServiceJSON implements PlayerService{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return i;
+        try {
+            return readIdCounter(counter)-1;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -168,24 +171,30 @@ public class PlayerServiceJSON implements PlayerService{
         return maxI.get(0)+1;
 
     }
-    public static int deleteEmptyFile(Path filePath, String nickname) throws IOException {
-        int i = 0;
+    public static void deleteEmptyFile(Path filePath) throws IOException {
         if (Files.exists(filePath)) {
             byte[] target = Files.readAllBytes(filePath);
             String fileContent = new String(target, StandardCharsets.UTF_8);
             if (fileContent.equals("[]")) Files.delete(filePath);
         }
-        else {
-            Files.createFile(Path.of(String.valueOf(filePath)));
-            readyPlayerOne(nickname);
-            return i = 1;
-        }
-        return i;
     }
 
+    public static int readIdCounter(Path counter) throws IOException {
+        int counterValue = 0;
+        counterValue = Integer.parseInt(new String(Files.readAllBytes(counter)));
+        return counterValue;
+    }
+
+    public static void writeIdCounter(Path counter) throws IOException {
+        int counterValue = readIdCounter(counter);
+        counterValue++;
+            Files.write(counter, String.valueOf(counterValue).getBytes());
+    }
+
+
     public static void readyPlayerOne (String nickname) throws IOException {
-        int i = 1;
-        players.add(new Player(i, nickname, 0));
+        players.add(new Player(readIdCounter(counter), nickname, 0));
         writeToFile(players);
+        writeIdCounter(counter);
     }
 }
