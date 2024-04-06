@@ -23,7 +23,7 @@ public class Copier {
     }
 
     public static Integer copyCounter () throws IOException {
-        Path filePath = Path.of("src/resources/counterFile.txt");
+        Path filePath = Path.of("src/resources/counter.txt");
 
         if (Files.exists(filePath)) {
             String stringCount = Files.readString(filePath);
@@ -38,7 +38,7 @@ public class Copier {
             return numberOfCopy;
         }
         else {
-            Files.writeString(Path.of("src/resources/counterFile.txt"), "0");
+            Files.writeString(Path.of("src/resources/counter.txt"), "0");
 
         }
         return null;
