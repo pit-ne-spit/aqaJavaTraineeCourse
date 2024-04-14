@@ -31,7 +31,7 @@ public class APImethods {
     }
 
     public static String dateFormatter(String date) {
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSX");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
         try {
             Date date2 = sdf2.parse(date);
             return sdf2.format(date2);

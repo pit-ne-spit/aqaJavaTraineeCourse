@@ -4,6 +4,16 @@ public class Employer {
 
     int id;
     boolean isActive;
+    String createDateTime;
+    String lastChangedDateTime;
+    String firstName;
+    String lastName;
+    String middleName;
+    String phone;
+    String email;
+    String birthdate;
+    String avatar_url;
+    int companyId;
 
     @Override
     public String toString() {
@@ -23,13 +33,6 @@ public class Employer {
                 '}';
     }
 
-    String createDateTime;
-    String lastChangedDateTime;
-    String firstName;
-    String lastName;
-    String middleName;
-    String phone;
-    String email;
 
     public int getId() {
         return id;
@@ -79,9 +82,7 @@ public class Employer {
         return companyId;
     }
 
-    String birthdate;
-    String avatar_url;
-    int companyId;
+
 
     public Employer(int id, boolean isActive, String createDateTime, String lastChangedDateTime, String firstName, String lastName, String middleName, String phone, String email, String birthdate, String avatar_url, int companyId) {
         this.id = id;

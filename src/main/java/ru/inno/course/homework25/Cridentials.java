@@ -5,6 +5,15 @@ public class Cridentials {
     private String user = "x_clients_user";
     private String password = "x7ngHjC1h08a85bELNifgKmqZa8KIR40";
 
+
+
+    private String apiAdminJson = """
+            {
+              "username": "leonardo",
+              "password": "leads"
+            }
+            """;
+
     public String getUrl() {
         return url;
     }
@@ -13,6 +22,9 @@ public class Cridentials {
     }
     public String getPassword() {
         return password;
+    }
+    public String getApiAdminJson() {
+        return apiAdminJson;
     }
 
 

@@ -1,0 +1,39 @@
+package ru.inno.course.homework25;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+import static org.junit.Assert.assertEquals;
+
+public class tests_PostEmployee {
+    private Cridentials cridentials;
+    private Connection connection;
+
+    @BeforeEach
+    public void setUp() {
+        cridentials = new Cridentials();
+        try {
+            connection = DriverManager.getConnection(cridentials.getUrl(), cridentials.getUser(), cridentials.getPassword());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }}
+
+    @Test
+    @DisplayName("Проверяем статус код")
+
+    public void testGetStatus() throws SQLException {
+        assertEquals(201, Precondition.addEmployeesToRandomCompany(connection, 1).getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Проверяем факт добавления в БД пользователя с переданными параметрами")
+
+    public void testAddEmployerToRandomCompany () throws SQLException {
+        System.out.println(Precondition.addEmployeesToRandomCompany(connection, 1));
+    }
+}
