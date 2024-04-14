@@ -99,4 +99,28 @@ public class Employer {
         this.companyId = companyId;
     }
 
+    public Employer(boolean isActive, String firstName, String lastName, String middleName, String phone, String email, String url) {
+        this.isActive = isActive;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.phone = phone;
+        this.email = email;
+        this.avatar_url = url;
+    }
+
+    public static String createEmployeeRequestBody(String firstName, String lastName, String middleName, int companyId, String email, String url, String phone) {
+        return "{\"firstName\":" + " \"" + firstName + "\"," +
+                "\"lastName\":" + " \"" + lastName + "\"," +
+                "\"middleName\":" + " \"" + middleName + "\"," +
+                "\"companyId\":"  + companyId + "," +
+                "\"email\":" + " \"" + email + "\"," +
+                "\"url\":" + " \"" + url + "\"," +
+                "\"phone\":" + " \"" + phone + "\"," +
+                "\"isActive\":" + true +
+                "}";
+    }
+
 }
+
+

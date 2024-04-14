@@ -61,6 +61,31 @@ public class DBmethods {
 
     }
 
+    public static List<Employer> getEmployerFromDbByID(Connection connection, int employerID) throws SQLException, ParseException {
+        ResultSet resultSet = connection.createStatement().executeQuery(DBrequests.getEmployerById + employerID);
+        List<Employer> dbEmployersList = new ArrayList<>();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            boolean isActive = resultSet.getBoolean("is_active");
+            String createDateTime = dateFormatter(resultSet.getString("create_timestamp"));
+            String lastChangedDateTime = dateFormatter(resultSet.getString("change_timestamp"));
+            String firstName = resultSet.getString("first_name");
+            String lastName = resultSet.getString("last_name");
+            String middleName = resultSet.getString("middle_name");
+            String phone = resultSet.getString("phone");
+            String email = resultSet.getString("email");
+            String birthdate = resultSet.getString("birthdate");
+            String avatar_url = resultSet.getString("avatar_url");
+            int companyId = resultSet.getInt("company_id");
+
+            Employer employer = new Employer(id, isActive, createDateTime, lastChangedDateTime, firstName,
+                    lastName, middleName, phone, email, birthdate, avatar_url, companyId);
+            dbEmployersList.add(employer);
+        }
+        return dbEmployersList;
+    }
+
+
 
 
 }

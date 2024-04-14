@@ -43,57 +43,33 @@ public class Precondition {
     }
 
     public static Response addEmployeesToRandomCompany(Connection connection, int count) throws SQLException {
-
         Response response = null;
+
         for (int i = 0; i < count; i++) {
-            response = given()
-                    .body("{\"firstName\":" + "\"" + WordGenerator.generatedWord() + "\","
-                            + "\"lastName\":" + "\"" + WordGenerator.generatedWord() + "\","
-                            + "\"middleName\":" + "\"" + WordGenerator.generatedWord() + "\","
-                            + "\"companyId\":" + randomCompanyId(getCompaniesId(connection)) + ","
-                            + "\"email\":" + "\"" + WordGenerator.generatedWord() + "@mail.ru\","
-                            + "\"url\":" + "\"" + WordGenerator.generatedWord() + ".ru\","
-                            + "\"phone\":" + "\"+79088885914\","
-                            + "\"isActive\":" + true + "}")
-                    .header("x-client-token", getToken())
-                    .contentType(ContentType.JSON)
-                    .when()
-                    .post("https://x-clients-be.onrender.com/employee");
+            response = createEmployeeRequest(employerChars(randomCompanyId(getCompaniesId(connection))));
         }
+
         return response;
     }
-    public static void addEmployeesToCompany(int count, int companyId) {
 
-        for (int i=0; i < count; i++) {
-                given()
-                    .body("{\"firstName\":" + "\"" + WordGenerator.generatedWord() + "\","
-                            + "\"lastName\":" + "\"" + WordGenerator.generatedWord() + "\","
-                            + "\"middleName\":" + "\"" + WordGenerator.generatedWord() + "\","
-                            + "\"companyId\":" + companyId + ","
-                            + "\"email\":" + "\"" + WordGenerator.generatedWord() + "@mail.ru\","
-                            + "\"url\":" + "\"" + WordGenerator.generatedWord() + ".ru\","
-                            + "\"phone\":" + "\"+79088885914\","
-                            + "\"isActive\":" + true + "}")
-                    .header("x-client-token", getToken())
-                    .contentType(ContentType.JSON)
-                    .when()
-                    .post("https://x-clients-be.onrender.com/employee");
-        }
+    public static Response addCustomEmployerToRandomCompany (Connection connection, String requestBody) {
+        Response response = null;
+        response = createEmployeeRequest(requestBody);
+        return response;
     }
-    public static void addEmployeeToCompany(int companyId) {
-           given()
-                    .body("{\"firstName\":" + "\"" + WordGenerator.generatedWord() + "\","
-                            + "\"lastName\":" + "\"" + WordGenerator.generatedWord() + "\","
-                            + "\"middleName\":" + "\"" + WordGenerator.generatedWord() + "\","
-                            + "\"companyId\":" + companyId + ","
-                            + "\"email\":" + "\"" + WordGenerator.generatedWord() + "@mail.ru\","
-                            + "\"url\":" + "\"" + WordGenerator.generatedWord() + ".ru\","
-                            + "\"phone\":" + "\"+79088885914\","
-                            + "\"isActive\":" + true + "}")
-                    .header("x-client-token", getToken())
-                    .contentType(ContentType.JSON)
-                    .when()
-                    .post("https://x-clients-be.onrender.com/employee");
+
+    public static Response addEmployeesToCompany(int count, int companyId) {
+        Response response = null;
+
+        for (int i = 0; i < count; i++) {
+            response = createEmployeeRequest(employerChars(companyId));
+        }
+
+        return response;
+    }
+    public static Response addEmployeeToCompany(int companyId) {
+        Response response = createEmployeeRequest(employerChars(companyId));
+        return response;
     }
 
     public static List<Integer> getCompaniesId(Connection connection) throws SQLException {
@@ -110,5 +86,39 @@ public class Precondition {
         Random random = new Random();
         int randomCompanyId = companiesId.get(random.nextInt(companiesId.size()));
         return randomCompanyId;
+    }
+
+    private static Response createEmployeeRequest(String requestBody) {
+        return given()
+                .body(requestBody)
+                .header("x-client-token", getToken())
+                .contentType(ContentType.JSON)
+                .post("https://x-clients-be.onrender.com/employee");
+    }
+
+    public static String employerChars (int companyId) {
+        String firstName = WordGenerator.generatedWord();
+        String lastName = WordGenerator.generatedWord();
+        String middleName = WordGenerator.generatedWord();
+        String email = WordGenerator.generatedWord() + "@mail.ru";
+        String url = WordGenerator.generatedWord() + ".ru";
+        String phone = "+79088885914";
+        String employeeRequestBody = Employer.createEmployeeRequestBody(firstName, lastName, middleName, companyId, email, url, phone);
+        return employeeRequestBody;
+    }
+
+    public static List<Employer> testChars () {
+        List<Employer> testChars = new ArrayList<>();
+        boolean isActive = true;
+        String firstName = WordGenerator.generatedWord();
+        String lastName = WordGenerator.generatedWord();
+        String middleName = WordGenerator.generatedWord();
+        String email = WordGenerator.generatedWord() + "@mail.ru";
+        String url = WordGenerator.generatedWord() + ".ru";
+        String phone = "+79088885914";
+
+        Employer employer = new Employer(isActive, firstName, lastName, middleName, phone, email, url);
+        testChars.add(employer);
+        return testChars;
     }
 }
